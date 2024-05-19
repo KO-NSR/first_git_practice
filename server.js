@@ -6,8 +6,16 @@ const io = require("socket.io")(server);
 const PORT = 3000;
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
-})
+    res.sendFile(__dirname + "/index.html");
+});
+
+io.on("connection", (socket) => {
+    console.log("User connected.")
+    socket.on("chat message", (msg) => {
+        io.emit("chat message", msg);
+    });
+});
+
 
 server.listen(PORT, () => {
     console.log("listening on 3000");
